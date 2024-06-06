@@ -1,69 +1,19 @@
-version: "3.1"
-name: cool-profile-system
-
+name: effective-mobile-users
 services:
-  backend:
-    container_name: backend-service
-    restart: always
-    volumes:
-      - ./static:/app/static
+  users-service:
+    build: ./users_service
     networks:
-      - db-network
-    build:
-      context: .
-    environment:
-      DB_HOST: my-sql-service
-    depends_on:
-      - my-sql
-    ports:
-      - "3000:3000"
-    develop:
-      watch:
-        - path: index.js
-          target: /app/index.js
-          action: sync+restart
+      - backend
 
-        - path: src
-          target: /app/src
-          action: sync+restart
-
-        - path: package-lock.json
-          action: rebuild
-
-        - path: package.json
-          action: rebuild
-
-  my-sql:
-    container_name: my-sql-service
-    image: mysql
-    restart: always
-    ports:
-     - "3306:3306"
+  users-actions-service:
+    build: ./users_actions_service
     networks:
-      - db-network
-    environment:
-      MYSQL_ROOT_PASSWORD: mysql-root
-      MYSQL_DATABASE: mysql
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: mysql
-  
-  databacker:
-    image: databack/mysql-backup
-    restart: always
-    container_name: databacker-service
-    depends_on:
-      - my-sql
-    networks:
-      - db-network
-    environment:
-      DB_SERVER: my-sql-service
-      DB_USER: mysql
-      DB_PASS: mysql
-      DB_NAMES: mysql
+      - backend
 
-      DB_DUMP_TARGET: /db
-    volumes:
-      - ./data:/db
+  db:
+    image: postgres
+    networks:
+      - backend
 
 networks:
-  db-network:
+  backend:
