@@ -1,19 +1,63 @@
 name: effective-mobile-users
 services:
-  users-service:
-    build: ./users_service
-    networks:
-      - backend
+  # users-service:
+  #   build: ./users_service
+  #   networks:
+  #     - backend
 
   users-actions-service:
     build: ./users_actions_service
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db-service
+      DB_PORT: 5432
+      DB_PWD: postgres
+      DB_USER: postgres
+      DB_NAME: postgres
+      MODE: DEV
+    
+    networks:
+      - backend
+    ports:
+      - "3000:3000"
+    develop:
+      watch:
+        - path: ./users_actions_service/src
+          target: /app/src
+          action: sync
+
+        - path: ./users_actions_service/package.json
+          action: rebuild
+
+        - path: ./users_actions_service/package-lock.json
+          action: rebuild
+
+  db:
+    container_name: db-service
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
     networks:
       - backend
 
-  db:
-    image: postgres
+  pgadmin:
+    container_name: pgadmin-service
+    image: dpage/pgadmin4
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.admin
+      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_LISTEN_PORT: 5050
     networks:
       - backend
+    ports:
+      - "5050:5050"
 
 networks:
   backend:

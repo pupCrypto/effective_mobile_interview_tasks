@@ -1,14 +1,15 @@
-export const enum ActionType {
+
+export enum ActionType {
     USER_CREATED = 'user-created',
     USER_MODIFIED = 'user-modified'
 }
 
-export const enum ResMsg {
+export enum ResMsg {
     ACTION_SAVED = 'Событие было успешно сохранено',
     CANNOT_SAVE_ACTION = 'Не удалось сохранить событие',
 }
 
-export const enum ResStatus {
+export enum ResStatus {
     OK = 'ok',
     ERROR = 'error'
 }

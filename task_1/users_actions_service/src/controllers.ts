@@ -12,4 +12,6 @@ export async function saveAction(req: Request, res: Response) {
 export async function getActions(req: Request, res: Response) {
     const service = new ServiceFacade();
     const actions = await service.getActions();
+    const serActions = service.serializeActions(actions);
+    res.json({status: ResStatus.OK, actions: serActions});
 }

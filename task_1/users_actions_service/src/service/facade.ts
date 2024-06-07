@@ -1,4 +1,4 @@
-import { Action } from './action';
+import { Action, UserCreatedAction } from './action';
 import { ActionType } from '../consts';
 import { getFactoryClassByActionType } from './actions.factory';
 import { DbActionSaver } from './action.saver';
@@ -14,8 +14,8 @@ export default class ServiceFacade {
         const factory = new Factory();
         return factory.build(userId);
     }
-    async getActions(userId: number | undefined = undefined) {
-
+    async getActions(userId: number | undefined = undefined): Promise<Action[]> {
+        return [new UserCreatedAction(1)]
     }
     async saveAction(action: Action) {
         const saver = new DbActionSaver();
