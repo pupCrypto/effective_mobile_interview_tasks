@@ -1,5 +1,6 @@
 const { STATUS, RES_MSG } = require('../consts');
 const { UserService } = require('../services/user');
+const ActionsSdk = require('../utils/actions.sdk');
 
 
 async function editProfile(req, res) {
@@ -11,6 +12,9 @@ async function editProfile(req, res) {
     }
     await UserService.updateUser(req.auth.user, req.body);
     res.json({status: STATUS.OK, msg: RES_MSG.USER_UPDATED});
+
+    const sdk = new ActionsSdk();
+    await sdk.sendUserModifiedAction(req.params.userId);
 }
 
 async function getProfile(req, res) {

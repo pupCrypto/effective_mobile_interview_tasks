@@ -1,6 +1,4 @@
 const { checkSchema } = require('express-validator');
-const { getEnumValues } = require('../utils/general');
-const { GENDER } = require('../consts');
 
 function checkPage(value, { req }) {
     req.query.page = Number(value) || 1;
@@ -21,9 +19,6 @@ const editProfileSchema = checkSchema({
     userId: { isInt: true, notEmpty: true },
     email: { isEmail: true, optional: true },
     firstName: { isLength: { options: {max: 32 } }, optional: true },
-    lastName: { isLength: { options: {max: 32 } }, optional: true },
-    gender: { isIn: { options: [ ...getEnumValues(GENDER) ] }},
-    photo: { optional: true },
     authorization: { notEmpty: true, isJWT: true }
 }, ['params', 'body', 'headers']);
 

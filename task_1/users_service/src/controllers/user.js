@@ -2,6 +2,7 @@ const {
     UserService,
     UserAlreadyExistsError,
 } = require('../services/user');
+const ActionsSdk = require('../utils/actions.sdk');
 const { STATUS, RES_MSG } = require('../consts');
 
 async function registerUser(req, res) {
@@ -12,8 +13,13 @@ async function registerUser(req, res) {
         res.json({status: STATUS.ERROR, msg: RES_MSG.USER_ALREADY_EXISTS});
         return;
     }
-    await UserService.register(firstName, email, password);
+    const user = await UserService.register(firstName, email, password);
     res.json({status: STATUS.OK, msg: RES_MSG.USER_REGISTERED});
+    
+    const sdk = new ActionsSdk();
+    await sdk.sendUserRegisteredAction(user.id);
+
+
 }
 async function loginUser(req, res) {
     const { email, password } = req.body;

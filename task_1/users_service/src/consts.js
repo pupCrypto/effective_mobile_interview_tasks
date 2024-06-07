@@ -1,9 +1,4 @@
 const ONE_HOUR = 3600;
-const ONE_MB = 10000000;
-const GENDER = {
-    FEMALE: 'female',
-    MALE: 'male',
-};
 const USERS_PER_PAGE = 10;
 const RES_MSG = {
     USER_REGISTERED: 'Пользователь был успешно зарегистрирован',
@@ -24,9 +19,7 @@ const STATUS = {
 
 module.exports = {
     ONE_HOUR,
-    GENDER,
     STATUS,
-    ONE_MB,
     RES_MSG,
     USERS_PER_PAGE,
 };

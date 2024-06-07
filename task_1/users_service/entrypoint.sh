@@ -1,3 +1,7 @@
 #!/bin/bash
-
-npm start
+if [[ "$MODE" = DEV ]]
+then
+    npm run dev
+else
+    npm start
+fi

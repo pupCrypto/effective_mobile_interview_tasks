@@ -71,6 +71,7 @@ class UserService {
         const hashedPassword = hashPassword(password);
         const user = User.build({firstName, email, password: hashedPassword});
         await user.save();
+        return user;
     }
 }
 

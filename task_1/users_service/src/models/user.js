@@ -15,9 +15,6 @@ User.init(
       type: DataTypes.STRING(32),
       allowNull: false,
     },
-    lastName: {
-      type: DataTypes.STRING(32),
-    },
     email: {
         type: DataTypes.STRING(128),
         allowNull: false,
@@ -26,13 +23,6 @@ User.init(
     password: {
         type: DataTypes.TEXT,
         allowNull: false,
-    },
-    gender: {
-        type: DataTypes.ENUM,
-        values: [...getEnumValues(GENDER)],
-    },
-    photo: {
-        type: DataTypes.TEXT
     },
   },
   {

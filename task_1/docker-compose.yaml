@@ -1,12 +1,8 @@
 name: effective-mobile-users
 services:
-  # users-service:
-  #   build: ./users_service
-  #   networks:
-  #     - backend
-
-  users-actions-service:
-    build: ./users_actions_service
+  users-service:
+    build: ./users_service
+    restart: on-failure
     depends_on:
       - db
     environment:
@@ -16,6 +12,39 @@ services:
       DB_USER: postgres
       DB_NAME: postgres
       MODE: DEV
+      PORT: 3000
+      USER_ACTIONS_SERVICE_HOST: users-actions-service
+      USER_ACTIONS_SERVICE_PORT: 3000
+    networks:
+      - backend
+    ports:
+      - "3001:3000"
+    develop:
+      watch:
+        - path: ./users_service/src
+          target: /app/src
+          action: sync
+
+        - path: ./users_service/package.json
+          action: rebuild
+
+        - path: ./users_service/package-lock.json
+          action: rebuild
+
+  users-actions-service:
+    container_name: users-actions-service
+    build: ./users_actions_service
+    restart: on-failure
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db-service
+      DB_PORT: 5432
+      DB_PWD: postgres
+      DB_USER: postgres
+      DB_NAME: postgres
+      MODE: DEV
+      PORT: 3000
     
     networks:
       - backend
