@@ -1,12 +1,16 @@
-# Cool profile system for Business Sector company
-
-To start locally (please check src/config.js to avoid possible errors)
-```
-npm start
-```
-To start using docker
+# Start
+To start both services with postgres use:
 ```
 docker compose up
+```
+
+
+# Users service
+
+To start service locally (please check users_service/src/config.js to avoid possible errors)
+```
+cd users_service
+npm start
 ```
 
 ### POST /api/user/register
@@ -77,13 +81,13 @@ Gets access token
 }
 ```
 
-### GET /api/profiles/{userId}
+### GET /api/profiles/{user_id}
 Gets profile info
 
 
 |Name     |Required|Type  |Location|
 |--------:|:------:|:----:|:------:|
-|userId    |required|int  |param   |
+|user_id  |required|int   |param   |
 
 
 #### Example
@@ -159,13 +163,13 @@ Gets profiles info
 }
 ```
 
-### PUT /api/profiles/{userId}
+### PUT /api/profiles/{user_id}
 Edits profile info
 
 
 |Name         |Required|Type  |Location|
 |------------:|:------:|:----:|:------:|
-|userId       |required|int   |param   |
+|user_id      |required|int   |param   |
 |authorization|required|jwt   |header  |
 
 
@@ -189,5 +193,77 @@ Edits profile info
 {
     "status": "error",
     "msg": "Пользователь не существует"
+}
+```
+
+# Users Actions service
+To start service locally (please check users_actions_service/src/config.ts to avoid possible errors)
+
+Dev server
+```
+cd users_actions_service
+npm run dev
+```
+Prod server
+```
+cd users_actions_service
+npm start
+```
+
+### POST /api/actions
+Create action
+
+
+|Name         |Required|Type  |Location|
+|------------:|:------:|:----:|:------:|
+|user_id      |required|int   |body    |
+|action_type  |required|enum: user-created, user-modified|body|
+
+#### Example
+```
+/api/actions
+{
+    "user_id": 1,
+    "action_type": "user-created",
+}
+```
+#### 200 Ok
+```
+{
+    "status": "ok",
+    "msg": "Событие было успешно сохранено"
+}
+```
+#### 400 Error
+```
+{
+    "status": "error",
+    "msg": "Не удалось сохранить событие"
+}
+```
+
+### GET /api/actions
+Get actions
+
+|Name    |Required|Type  |Location|Default|
+|-------:|:------:|:----:|:------:|:--_--:|
+|user_id |optional|int   |query   |null   |
+|page    |optional|int   |query   |1      |
+|size    |optional|int   |query   |10     |
+
+#### Example
+```
+/api/actions?user_id=1
+```
+#### 200 Ok
+```
+{
+    "status": "ok",
+    "actions": [
+        {
+            "type": "user-created",
+            "user_id": 1
+        }
+    ]
 }
 ```

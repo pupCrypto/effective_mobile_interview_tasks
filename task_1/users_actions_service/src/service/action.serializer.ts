@@ -4,7 +4,7 @@ export default class Serializer {
     serialize(action: Action): object {
         return {
             type: action.type,
-            userId: action.userId
+            user_id: action.userId
         };
     }
     serializeMany(actions: Array<Action>): Array<object> {

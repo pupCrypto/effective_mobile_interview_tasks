@@ -4,7 +4,7 @@ const ActionsSdk = require('../utils/actions.sdk');
 
 
 async function editProfile(req, res) {
-    const targetUserId = Number(req.params.userId);
+    const targetUserId = Number(req.params.user_id);
     if (req.auth.user.id !== targetUserId) {
         res.status(403);
         res.json({status: STATUS.ERROR, msg: RES_MSG.ACCESS_DENIED});
@@ -14,11 +14,11 @@ async function editProfile(req, res) {
     res.json({status: STATUS.OK, msg: RES_MSG.USER_UPDATED});
 
     const sdk = new ActionsSdk();
-    await sdk.sendUserModifiedAction(req.params.userId);
+    await sdk.sendUserModifiedAction(req.params.user_id);
 }
 
 async function getProfile(req, res) {
-    const user = await UserService.getUserById(req.params.userId);
+    const user = await UserService.getUserById(req.params.user_id);
     if (!user) {
         res.status(404);
         res.json({status: STATUS.ERROR, msg: RES_MSG.USER_DOES_NOT_EXISTS});

@@ -16,14 +16,14 @@ const loginUserSchema = checkSchema({
 }, ['body']);
 
 const editProfileSchema = checkSchema({
-    userId: { isInt: true, notEmpty: true },
+    user_id: { isInt: true, notEmpty: true },
     email: { isEmail: true, optional: true },
     firstName: { isLength: { options: {max: 32 } }, optional: true },
     authorization: { notEmpty: true, isJWT: true }
 }, ['params', 'body', 'headers']);
 
 const getProfileSchema = checkSchema({
-    userId: { isInt: true, notEmpty: true }
+    user_id: { isInt: true, notEmpty: true }
 }, ['params']);
 
 const getProfilesSchema = checkSchema({

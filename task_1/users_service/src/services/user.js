@@ -48,12 +48,9 @@ class UserService {
     static getUserDataObj(user) {
         return {
             id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
+            first_name: user.firstName,
             email: user.email,
-            gender: user.gender,
-            photo: user.photo,
-            regDateTime: user.createdAt,
+            reg_date_time: user.createdAt,
         };
     }
 
