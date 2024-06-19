@@ -1,0 +1,57 @@
+name: large-user-service
+
+services:
+  users-service:
+    container_name: users-service
+    build: .
+    restart: on-failure
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db-service
+      DB_PORT: 5432
+      DB_PWD: postgres
+      DB_USER: postgres
+      DB_NAME: postgres
+      MODE: DEV
+      PORT: 3000
+    networks:
+      - backend
+    ports:
+      - "3000:3000"
+    develop:
+      watch:
+        - path: ./
+          target: /app/
+          action: sync
+          ignore:
+            - './node_modules'
+
+  db:
+    container_name: db-service
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    networks:
+      - backend
+
+  pgadmin:
+    container_name: pgadmin-service
+    image: dpage/pgadmin4
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.admin
+      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_LISTEN_PORT: 5050
+    networks:
+      - backend
+    ports:
+      - "5050:5050"
+
+networks:
+  backend:
